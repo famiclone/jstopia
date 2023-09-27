@@ -66,18 +66,15 @@ function main_loop(state) {
 
     tick(dt);
 
-
     requestAnimationFrame(() => main_loop(state));
 }
 
-
-
-const rom = fetch('./roms/smb.nes')
-rom.then((data) => data.arrayBuffer()).then((data) => new Uint8Array(data)).then((data) => setup(data)).then((state) => {
-    state.log.push('Starting main loop...')
-
-    state.ui.elements.romData.innerHTML = state.rom.map((e) => {
-        return `<span style="padding: 0 5px;">${e.toString(16)}</span>`
-    }).join('')
-    main_loop(state)
-});
+fetch('./roms/smb.nes')
+    .then((data) => data.arrayBuffer())
+    .then((data) => new Uint8Array(data))
+    .then((data) => setup(data))
+    .then((state) => {
+        state.ui.elements.romData.innerHTML = state.rom.forEach((b) => b.toString(16));
+        state.log.push('Starting main loop...')
+        main_loop(state)
+    });
